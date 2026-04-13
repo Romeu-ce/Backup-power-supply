@@ -7,7 +7,6 @@ int usedEnergy = 0, usedPower = 0,chargEnergy=0;
 int usedTimeSeconds1 = 0,usedTimeSeconds = 0;
 bool timerRunning = false;
 int batVolt = 0,batCur = 0;
-//int a,b; //pins for voltage and current
 uint32_t now=0,lastTime = 0, usedTime0 = 0,usedTime1 = 0,usedTime2= 0;
 
 int control1(float c,float d){
@@ -27,17 +26,16 @@ int control1(float c,float d){
   if(netVoltage == HIGH && battaryCapacity<220000 ){  //there is electricity , charge the battery
     digitalWrite(2, HIGH); //turn on the charging module
     digitalWrite(4, LOW); 
-    batVolt = readVolt ;//digitalRead(a);
-    batCur = readCurr; //digitalRead(b);
-    usedTime2+=usedTime0; // turn of the battery
+    batVolt = readVolt ;
+    batCur = readCurr; 
+    usedTime2+=usedTime0; // how much time in this state
   }
   else if(netVoltage == LOW) { //discharge the battery
-    digitalWrite(2, LOW);  //there is no electrycity, use battery
-    digitalWrite(4,HIGH); //turn of charging module
-
-    batVolt = readCurr ;//digitalRead(a);
-    batCur = readCurr; //digitalRead(b); //replace "//" 
-    usedTime1+=usedTime0;
+    digitalWrite(2, LOW);  //turn of charging module
+    digitalWrite(4,HIGH); //there is no electrycity, use battery
+    batVolt = readCurr ;
+    batCur = readCurr; 
+    usedTime1+=usedTime0;  //how much time in this state
   }
   else if(netVoltage == HIGH && battaryCapacity>200000 ) { //stop charging
     digitalWrite(2, LOW);  //
