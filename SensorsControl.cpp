@@ -10,17 +10,23 @@ struct Result {
     float voltage;
     float current;
 };
- //std::ostream& operator<<(std::ostream& os, const Result& r) {
- //   return os << "sum: " << r.sum << ", product: " << r.product;
-//}
 
 Result control2(){
-  //dht.begin();
   delay(2000);
 
   float temp =dht.readTemperature(); // in celc
   float humidity =dht.readHumidity(); // in percent
 
-  return {temp,humidity};
+  float X=(float)analogRead(32);
+  float X1 = X- 112;    //datata error correction
+  float Vin = ((float)analogRead(36)/4095)*3.29; //pin VP voltage readings
+  float Ain = (X1/4095)*3.29;
+  float Vr = Vin * 4.85;   //real velues
+  float Ar= (Ain-1.1)/ 0.1; ////real velues
+  voltage = Vr;
+  current = Ar;
+
+
+  return {temp,humidity,voltage,current};
 
 }
