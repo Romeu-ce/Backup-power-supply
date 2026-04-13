@@ -2,7 +2,7 @@
 #define OLED
 
 
-Result screen(float a,float b);
+void screen(float a,float b);
 
 #endif
 #endif
