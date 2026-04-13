@@ -5,7 +5,7 @@
 #include <U8g2lib.h>
 
 float a,b,c,d;
-
+int batCap;
 void setup() {
     Serial.begin(115200);
     dht.begin();
@@ -29,5 +29,5 @@ void loop() {
   d = r.current;
 
   control1();
+  batCap = control1(c,d)
 }
-
