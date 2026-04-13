@@ -4,7 +4,7 @@
 #include <Wire.h>
 #include <U8g2lib.h>
 
-float a,b;
+float a,b,c,d;
 
 void setup() {
     Serial.begin(115200);
@@ -15,13 +15,19 @@ void setup() {
     pinMode(4, OUTPUT);
     pinMode(1,INPUT); //pin fot voltage
     pinMode(2,INPUT); //pin for current
+    pinMode(14, INPUT); //pin for sign
+    analogSetPinAttenuation(32, ADC_11db);  //current readings
+    analogSetPinAttenuation(36, ADC_11db);  //voltage readings
 }
 
 void loop() {
 
-  control1();
-
   Result r = control2();
   a = r.temp;
   b = r.humidity;
+  c = r.voltage;
+  d = r.current;
+
+  control1();
 }
+
