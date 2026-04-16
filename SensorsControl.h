@@ -5,6 +5,8 @@
 struct Result {
     float temp;
     float humidity;
+    float voltage;
+    float current;
 };
 Result control2();
 
