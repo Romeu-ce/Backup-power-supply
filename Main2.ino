@@ -1,22 +1,27 @@
 #include "BatteryControl.h"
 #include "SensorsControl.h"
+#include "OLED.h"
 #include <DHT.h>
 #include <Wire.h>
 #include <U8g2lib.h>
 
+
+bool screen_active = false;
+unsigned long screen_start = 0;
+const unsigned long SCREEN_DURATION = 10000; // 10 seconds
+
+int l =12;
 float a,b,c,d;
 int batCap;
 void setup() {
     Serial.begin(115200);
-    dht.begin();
-    u8g2.begin();
-    pinMode(2, OUTPUT);
-    pinMode(35, INPUT);
-    pinMode(4, OUTPUT);
-    pinMode(1,INPUT); //pin fot voltage
-    pinMode(2,INPUT); //pin for current
+    analogReadResolution(12); // 0–4095
+    pinMode(2, OUTPUT); //battery
+    pinMode(35, INPUT); //net Voltage
+    pinMode(4, OUTPUT); //battery
     pinMode(14, INPUT); //pin for sign
-    analogSetPinAttenuation(32, ADC_11db);  //current readings
+    pinMode(l, INPUT); //button for screen
+    analogSetPinAttenuation(34, ADC_11db);  //current readings
     analogSetPinAttenuation(36, ADC_11db);  //voltage readings
 }
 
@@ -28,6 +33,20 @@ void loop() {
   c = r.voltage;
   d = r.current;
 
-  control1();
-  batCap = control1(c,d)
+  control1(c,d);
+  batCap = control1(c,d);
+
+  if (digitalRead(l)== HIGH) {
+    screen_active = true;
+    screen_start = millis();
+    screen(a,b,c); // your init/start call
+  }
+
+  if (screen_active) {
+    if (millis()- screen_start>= SCREEN_DURATION) {
+        screen_active =false;
+       screen(a,b,c); // turn off / clear screen
+    }
+  } 
+
 }
