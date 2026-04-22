@@ -1,3 +1,4 @@
+#include "OLED.h"
 #include <Arduino.h>
 #include "OLED.h"
 #include <Wire.h>
@@ -5,10 +6,13 @@
 
 U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
 
+
 bool animationStat = false;
 
 void screen(float a,float b,float c) {
-  float a=12.2,b=14.4,c=90.9; //temporary test data
+  if (!screen_active) return;
+  u8g2.begin();
+  a=12.2,b=14.4,c=90.9;
   char line11[20];
   char line22[20];
   char line33[20];
@@ -32,7 +36,7 @@ void screen(float a,float b,float c) {
   String current2 = "";
   String current3 = "";
 
-  // animate first line
+  // --- Animate first line ---
   for (int i = 0; i < strlen(line1); i++) {
     current1 += line1[i];
     u8g2.clearBuffer();
@@ -44,7 +48,7 @@ void screen(float a,float b,float c) {
 
   delay(400);
 
-  // second line
+  // --- Animate second line ---
   for (int i = 0; i < strlen(line2); i++) {
     current2 += line2[i];
     u8g2.clearBuffer();
@@ -73,7 +77,7 @@ void screen(float a,float b,float c) {
   delay(500);
   }
 
-  u8g2.firstPage(); //keeps the information on the screen
+  u8g2.firstPage();
   do {
     u8g2.drawStr(10, 12,line1);
     u8g2.drawStr(70, 12, line11);
@@ -86,4 +90,6 @@ void screen(float a,float b,float c) {
   
 
   delay(1000);
+  
 }
+
