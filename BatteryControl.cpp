@@ -10,9 +10,9 @@ int batVolt = 0,batCur = 0;
 uint32_t now=0,lastTime = 0, usedTime0 = 0,usedTime1 = 0,usedTime2= 0;
 
 int control1(float c,float d){
-  readVolt = c;
-  readCurr= d;
-  netVoltage = digitalRead(35);
+  float readVolt = c;
+  float readCurr= d;
+  int netVoltage = digitalRead(35);
   Serial.print("Pin value: ");
   Serial.println(netVoltage);
 
