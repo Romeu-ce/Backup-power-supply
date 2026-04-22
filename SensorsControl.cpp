@@ -2,17 +2,12 @@
 #include <Arduino.h>
 #include <DHT.h>
 
-DHT dht(27,DHT11) //22 - is the pin used
+DHT dht(27,DHT11); //22 - is the pin used
 
-struct Result {
-    float temp;
-    float humidity;
-    float voltage;
-    float current;
-};
 
 Result control2(){
   delay(2000);
+  dht.begin();
 
   float temp =dht.readTemperature(); // in celc
   float humidity =dht.readHumidity(); // in percent
@@ -24,8 +19,8 @@ Result control2(){
   float Ain =Ai/2.210526;
   float Vr = Vin * 11;   //real velues ( 4.85)
   float Ar= (Ain-1.1)/ 0.1; //real velues
-  voltage = Vr;
-  current = Ar;
+  float voltage = Vr;
+  float current = Ar;
 
 
   return {temp,humidity,voltage,current};
